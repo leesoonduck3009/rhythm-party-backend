@@ -41,6 +41,7 @@ clientApp.use(session({
         domain: '.domain.com',
         sameSite: 'none'}
   }))
+clientApp.set("trust proxy", 1);
 clientApp.use(authClientWeb.initialize())
 clientApp.use(authClientWeb.session())
 clientApp.use((req, res, next) => {
