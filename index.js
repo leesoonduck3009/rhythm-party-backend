@@ -9,6 +9,7 @@ const express = require('express')
 const {socketInit} = require('./middleware/socketIO.js')
 const cors = require('cors')
 const session = require('express-session')
+const MongoStore = require('connect-mongo');
 const errorHandler = require('./middleware/errorHandler.js')
 const secretSessionKey = process.envSECRET_SESSION_KEY || "Hello world"
 const {authClientWeb, authAdminWeb} = require('./authentication/auth.js')
@@ -22,6 +23,7 @@ const connect = async ()=>{
     }   
 }
 connect();
+const db = mongoose.connection;
 const clientApp = express()
 clientApp.use(cors({
     origin: 'http://localhost:3000',
@@ -31,6 +33,7 @@ clientApp.use(cors({
 clientApp.use(express.json());
 clientApp.use(errorHandler);
 clientApp.use(session({
+    store: MongoStore.create({ mongoUrl:URL}),
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: true,
@@ -70,6 +73,7 @@ adminApp.use(cors({
 adminApp.use(express.json());
 adminApp.use(errorHandler);
 adminApp.use(session({
+    store: MongoStore.create({ mongoUrl:URL}),
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: true,
