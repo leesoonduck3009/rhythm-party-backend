@@ -37,6 +37,9 @@ clientApp.use(session({
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: false,
+    cookie: { secure: true, maxAge: 60*60*1000,
+        domain: '.domain.com',
+        sameSite: 'none'}
   }))
 clientApp.use(authClientWeb.initialize())
 clientApp.use(authClientWeb.session())
@@ -76,7 +79,9 @@ adminApp.use(session({
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 60*60*1000 }
+    cookie: { secure: true, maxAge: 60*60*1000,
+        domain: '.domain.com',
+        sameSite: 'none'}
   }))
 adminApp.use(authAdminWeb.initialize())
 adminApp.use(authAdminWeb.session())
