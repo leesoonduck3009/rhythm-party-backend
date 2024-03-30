@@ -36,7 +36,7 @@ clientApp.use(session({
     store: MongoStore.create({ mongoUrl:URL}),
     secret: secretSessionKey,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { secure: true, maxAge: 60*60*1000,
         domain: '.domain.com',
         sameSite: 'none'}
