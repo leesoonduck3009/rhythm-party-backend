@@ -10,6 +10,7 @@ const {socketInit} = require('./middleware/socketIO.js')
 const cors = require('cors')
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
+const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/errorHandler.js')
 const secretSessionKey = process.envSECRET_SESSION_KEY || "Hello world"
 const {authClientWeb, authAdminWeb} = require('./authentication/auth.js')
@@ -32,6 +33,7 @@ clientApp.use(cors({
 }))
 clientApp.use(express.json());
 clientApp.use(errorHandler);
+clientApp.use(cookieParser());
 clientApp.use(session({
     store: MongoStore.create({ mongoUrl:URL}),
     secret: secretSessionKey,
