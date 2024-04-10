@@ -35,6 +35,13 @@ clientApp.use(express.json());
 clientApp.use(errorHandler);
 clientApp.use(cookieParser());
 clientApp.enable('trust proxy')
+clientApp.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    next();
+});
 clientApp.use(session({
     store: MongoStore.create({ mongoUrl:URL}),
     secret: secretSessionKey,
@@ -92,6 +99,13 @@ adminApp.use((req, res, next) => {
     res.header('Pragma', 'no-cache');
     next();
   });
+adminApp.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    next();
+});
 adminApp.use('/auth',require('./route/routeAdmin/authAdminRoute.js'))
 adminApp.use('/api/user',require('./route/routeAdmin/userAdminRoute.js'))
 adminApp.use('/api/music',require('./route/routeAdmin/musicAdminRoute.js'))
