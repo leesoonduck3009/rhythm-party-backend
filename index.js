@@ -34,14 +34,13 @@ clientApp.use(cors({
 clientApp.use(express.json());
 clientApp.use(errorHandler);
 clientApp.use(cookieParser());
+clientApp.enable('trust proxy')
 clientApp.use(session({
     store: MongoStore.create({ mongoUrl:URL}),
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true, maxAge: 60*60*1000,
-        domain: '.domain.com',
-        sameSite: 'none'}
+    cookie: { secure: false,  sameSite: 'none'}
   }))
 clientApp.set("trust proxy", 1);
 clientApp.use(authClientWeb.initialize())
