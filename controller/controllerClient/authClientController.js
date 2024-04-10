@@ -1,7 +1,7 @@
 const { authClientWeb} = require('../../authentication/auth.js')
 const UserTable = require('../../entity/UserTable.js')
 const loginUser = (req, res, next) =>{
-  authClientWeb.authenticate(UserTable.ROLE_USER, (err, user, info) => {
+  authClientWeb.authenticate(UserTable.ROLE_USER, async (err, user, info) => {
     if (err) {
       return next(err);
     }
@@ -10,14 +10,13 @@ const loginUser = (req, res, next) =>{
       return res.status(401).json({message: "Login failed"})
     }
     // Xử lý trường hợp thành công
-    req.logIn(user, (err) => {
+     req.logIn(user, async (err) => {
       if (err) {
         return next(err);
       }
-    req.session.save( err1 => {
-        //res.send(req.user);
-        console.log(req.session);
-    });
+      await req.session.save();
+      // Send success response and user info
+      console.log("session: ", req.session); 
       console.log(user)
       return res.status(200).json({ success: true, message: 'Login successful', user: user });
     });
