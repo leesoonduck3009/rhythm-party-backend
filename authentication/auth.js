@@ -142,6 +142,7 @@ authClientWeb.use(UserTable.ROLE_USER,new LocalStrategy(
     }
   )));
 authClientWeb.serializeUser((user,done)=>{
+    console.log(user);
     done(null,user)
 })
 authClientWeb.deserializeUser((user,done)=>{
