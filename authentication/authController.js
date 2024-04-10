@@ -4,7 +4,7 @@ const User = require('../model/UserModel')
 const asyncHandler = require('express-async-handler')
 const isLoggedIn = (req,res,next)=>{
     console.table(req);
-    req.user ? next(): res.status(200).json({data: req.user, message: "hel"});
+    req.user ? next(): res.status(401).json({data: req.user, message: "hel"});
 }
 const isAuthenticatedCallBack = ()=>{}
 const isSuccessLogin = asyncHandler(async(req,res)=>{
