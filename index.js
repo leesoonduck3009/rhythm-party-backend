@@ -10,10 +10,10 @@ const {socketInit} = require('./middleware/socketIO.js')
 const cors = require('cors')
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
-const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/errorHandler.js')
 const secretSessionKey = process.envSECRET_SESSION_KEY || "Hello world"
 const {authClientWeb, authAdminWeb} = require('./authentication/auth.js')
+const cookieParser = require('cookie-parser');
 const connect = async ()=>{
     try{
         await mongoose.connect(URL)
@@ -34,20 +34,13 @@ clientApp.use(cors({
 clientApp.use(express.json());
 clientApp.use(errorHandler);
 clientApp.use(cookieParser());
-clientApp.enable('trust proxy')
-clientApp.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-    next();
-});
 clientApp.use(session({
     store: MongoStore.create({ mongoUrl:URL}),
     secret: secretSessionKey,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false,  sameSite: 'none'}
+    saveUninitialized: false,
+    cookie: { secure: false}
+
   }))
 clientApp.use(authClientWeb.initialize())
 clientApp.use(authClientWeb.session())
@@ -87,9 +80,7 @@ adminApp.use(session({
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true, maxAge: 60*60*1000,
-        domain: '.domain.com',
-        sameSite: 'none'}
+    cookie: { secure: false, maxAge: 60*60*1000 }
   }))
 adminApp.use(authAdminWeb.initialize())
 adminApp.use(authAdminWeb.session())
@@ -99,13 +90,6 @@ adminApp.use((req, res, next) => {
     res.header('Pragma', 'no-cache');
     next();
   });
-adminApp.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-    next();
-});
 adminApp.use('/auth',require('./route/routeAdmin/authAdminRoute.js'))
 adminApp.use('/api/user',require('./route/routeAdmin/userAdminRoute.js'))
 adminApp.use('/api/music',require('./route/routeAdmin/musicAdminRoute.js'))
