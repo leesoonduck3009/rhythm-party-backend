@@ -14,6 +14,10 @@ const loginUser = (req, res, next) =>{
       if (err) {
         return next(err);
       }
+    req.session.save( err1 => {
+        res.send(req.user);
+        console.log(req.session);
+    });
       console.log(user)
       return res.status(200).json({ success: true, message: 'Login successful', user: user });
     });

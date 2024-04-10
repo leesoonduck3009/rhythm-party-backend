@@ -12,7 +12,7 @@ const isSuccessLogin = asyncHandler(async(req,res)=>{
       //console.log(req)
       const existingUser = await User.findById(req.user.user._id);
       if(!existingUser)
-       return res.status(200).json({data:req.user});
+       return res.status(401).json({data:req.user});
       if(existingUser.refreshToken !== req.user.refreshToken)
       {
         
