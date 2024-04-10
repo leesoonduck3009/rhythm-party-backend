@@ -46,7 +46,7 @@ authClientWeb.use(new GoogleStrategy({
                 refreshToken: refreshToken,
                 accessToken: generateAccessToken(userData)
             }
-            done(null,userRespone)
+            await done(null,userRespone)
         }
         else{
             const userData = {
@@ -66,12 +66,12 @@ authClientWeb.use(new GoogleStrategy({
                 refreshToken: refreshToken,
                 accessToken: accessToken
             }
-            done(null,userRespone)
+            await done(null,userRespone)
         }
     }
     catch(Exception)
     {
-        done(null,false)
+       await done(null,false)
     }
   })
 ));
@@ -97,10 +97,10 @@ authClientWeb.use(UserTable.ROLE_USER,new LocalStrategy(
                     refreshToken: refreshToken,
                     accessToken: generateAccessToken(userData)
                 }
-                return done(null,userRespone);
+                await done(null,userRespone);
             }
             else
-                return done(null,false)
+                await done(null,false)
         }
         catch(e)
         {
