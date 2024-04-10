@@ -97,6 +97,8 @@ authClientWeb.use(UserTable.ROLE_USER,new LocalStrategy(
                     refreshToken: refreshToken,
                     accessToken: generateAccessToken(userData)
                 }
+                console.log("User auth.js: ", userRespone);
+                console.log("Session authjs: ", req.session);
                 await done(null,userRespone);
             }
             else
