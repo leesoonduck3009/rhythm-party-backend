@@ -15,7 +15,7 @@ const loginUser = (req, res, next) =>{
         return next(err);
       }
     req.session.save( err1 => {
-        res.send(req.user);
+        //res.send(req.user);
         console.log(req.session);
     });
       console.log(user)
