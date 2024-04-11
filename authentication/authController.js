@@ -5,6 +5,7 @@ const asyncHandler = require('express-async-handler')
 const isLoggedIn = async (req,res,next)=>{
     await req.session.save();
     console.log(req.session);
+    console.log("sessionID: ",req.sessionID); 
     req.user ? next(): res.status(401).json({data: req.user, message: "hel"});
 }
 const isAuthenticatedCallBack = ()=>{}
