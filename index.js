@@ -44,12 +44,7 @@ clientApp.use(session({
   }))
 clientApp.use(authClientWeb.initialize())
 clientApp.use(authClientWeb.session())
-clientApp.use((req, res, next) => {
-    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-    res.header('Expires', '-1');
-    res.header('Pragma', 'no-cache');
-    next();
-});
+
 clientApp.use('/auth',require('./route/routeClient/authClientRoute.js'))
 clientApp.use('/api/user',require('./route/routeClient/userRoute.js'))
 clientApp.use('/api/music',require('./route/routeClient/musicRoute.js'))
